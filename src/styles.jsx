@@ -71,8 +71,8 @@ const useStyles = makeStyles({
   },
   loader: {
     position: "fixed",
-    left: "50%",
-    top: "50%",
+    left: "48%",
+    top: "45%",
     width: "100%",
     height: "100%",
     zIndex: "9999",

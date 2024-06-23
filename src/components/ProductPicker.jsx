@@ -5,17 +5,11 @@ import {
   DialogContent,
   DialogActions,
   Button,
-  Checkbox,
   List,
-  ListItemText,
-  ListSubheader,
   TextField,
   Typography,
-  ListItemButton,
-  Avatar,
   IconButton,
 } from "@mui/material";
-import { makeStyles } from "@mui/styles";
 import CloseIcon from "@mui/icons-material/Close";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -40,10 +34,11 @@ const ProductPicker = ({
   const classes = useStyles();
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
+  useEffect(() => {}, []);
   useEffect(() => {
     fetchData();
   }, [currentPage]);
@@ -56,6 +51,7 @@ const ProductPicker = ({
   }, [currentPage]);
 
   const fetchData = async () => {
+    setIsLoading(true);
     try {
       const response = await fetch(
         `http://localhost:3000/task/products?&page=${currentPage}`
@@ -70,17 +66,14 @@ const ProductPicker = ({
     } finally {
       setTimeout(() => {
         setIsLoading(false);
-      }, 2000);
+      }, 1500);
     }
   };
 
-  const handleScroll = () => {
-    const scrollY = window.scrollY;
-    const windowHeight = window.innerHeight;
-    const documentHeight = document.documentElement.scrollHeight;
-    console.log("scrolled");
-    if (scrollY + windowHeight >= documentHeight - 100) {
-      setCurrentPage(currentPage + 1);
+  const handleScroll = (event) => {
+    const { scrollTop, clientHeight, scrollHeight } = event.target;
+    if (scrollHeight - scrollTop <= clientHeight + 0.5) {
+      setCurrentPage((prevPage) => prevPage + 1);
     }
   };
 
@@ -181,7 +174,7 @@ const ProductPicker = ({
         >
           <CloseIcon />
         </IconButton>
-        <DialogContent className={classes.pickerRoot}>
+        <DialogContent className={classes.pickerRoot} onScroll={handleScroll}>
           <TextField
             className={classes.searchField}
             variant="outlined"
