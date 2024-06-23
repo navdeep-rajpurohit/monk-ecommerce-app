@@ -9,12 +9,14 @@ import {
   TextField,
   Typography,
   IconButton,
+  ListItemText,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
 import { useStyles } from "../styles";
 import PickerList from "./tables/PickerList";
+import _ from "lodash"; // Import lodash for debounce function
 
 const theme = createTheme({
   palette: {
@@ -37,8 +39,25 @@ const ProductPicker = ({
   const [isLoading, setIsLoading] = useState(false);
   const [products, setProducts] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [hasMoreProducts, setHasMoreProducts] = useState(true);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setSelectedProducts([]);
+  }, [open, onClose]);
+
+  useEffect(() => {
+    const debouncedFetch = _.debounce(() => {
+      setProducts([]); // Clear previous products when search term changes
+      setCurrentPage(1); // Reset page to 1
+      fetchData(); // Fetch data with new search term
+    }, 500); // Adjust the debounce time as needed
+
+    debouncedFetch();
+    return () => {
+      debouncedFetch.cancel();
+    };
+  }, [searchTerm]);
+
   useEffect(() => {
     fetchData();
   }, [currentPage]);
@@ -54,13 +73,17 @@ const ProductPicker = ({
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/task/products?&page=${currentPage}`
+        `http://localhost:3000/task/products?&search=${searchTerm}&page=${currentPage}`
       );
       if (!response.ok) {
         console.log("API error");
       }
       let jsonData = await response.json();
-      setProducts([...products, ...jsonData]);
+      if (jsonData.length === 0) {
+        setHasMoreProducts(false);
+      } else {
+        setProducts([...products, ...jsonData]);
+      }
     } catch (err) {
       console.log(err);
     } finally {
@@ -73,7 +96,9 @@ const ProductPicker = ({
   const handleScroll = (event) => {
     const { scrollTop, clientHeight, scrollHeight } = event.target;
     if (scrollHeight - scrollTop <= clientHeight + 0.5) {
-      setCurrentPage((prevPage) => prevPage + 1);
+      if (hasMoreProducts) {
+        setCurrentPage((prevPage) => prevPage + 1);
+      }
     }
   };
 
@@ -132,12 +157,8 @@ const ProductPicker = ({
     setSelectedProducts(newSelectedItems);
   };
 
-  const filteredProducts = products.filter(
-    (product) =>
-      product.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      product.variants.some((variant) =>
-        variant.title.toLowerCase().includes(searchTerm.toLowerCase())
-      )
+  const filteredProducts = products.filter((product) =>
+    product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const addProduct = () => {
@@ -184,6 +205,11 @@ const ProductPicker = ({
             onChange={(e) => setSearchTerm(e.target.value)}
           />
           <List>
+            {filteredProducts.length == 0 ? (
+              <ListItemText primary="No product found" />
+            ) : (
+              ""
+            )}
             {filteredProducts.map((product) => (
               <PickerList
                 key={product.id}

@@ -12,7 +12,7 @@ const PickerList = ({
   product,
   handleToggleProduct,
   selectedProducts,
-  handleToggleVariant
+  handleToggleVariant,
 }) => {
   return (
     <React.Fragment key={product.id}>
