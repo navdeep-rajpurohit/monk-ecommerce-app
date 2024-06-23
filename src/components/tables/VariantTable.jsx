@@ -9,6 +9,7 @@ const VariantTable = ({
   variant,
   variantIndex,
   handleToggleDiscountVariant,
+  index
 }) => {
   const classes = useStyles();
   return (

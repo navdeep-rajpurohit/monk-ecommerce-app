@@ -57,6 +57,26 @@ const useStyles = makeStyles({
       margin: 0,
     },
   },
+  pickerRoot: {
+    minWidth: 500,
+  },
+  searchField: {
+    marginBottom: 16,
+  },
+
+  selectedCount: {
+    padding: "8px 16px",
+    borderTop: "1px solid #e0e0e0",
+    borderBottom: "1px solid #e0e0e0",
+  },
+  loader: {
+    position: "fixed",
+    left: "50%",
+    top: "50%",
+    width: "100%",
+    height: "100%",
+    zIndex: "9999",
+  },
 });
 
 export { useStyles };

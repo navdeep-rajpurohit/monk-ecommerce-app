@@ -127,6 +127,7 @@ const ProductTable = ({
               variant={variant}
               variantIndex={variantIndex}
               handleToggleDiscountVariant={handleToggleDiscountVariant}
+              index={index}
             />
           ))}
         </div>
