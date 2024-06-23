@@ -1,3 +1,4 @@
+import React, { useState, useEffect, useCallback } from "react";
 import { Button, TextField, IconButton, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -8,11 +9,13 @@ import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useStyles } from "../../styles";
 import VariantTable from "./VariantTable";
+import DraggableVariant from "../draggable/DraggableVariant";
 
 const ProductTable = ({
   item,
   index,
   productsList,
+  setProductsList,
   showMenu,
   handleToggleDiscountProduct,
   handleDeleteProduct,
@@ -20,6 +23,18 @@ const ProductTable = ({
   handleToggleDiscountVariant,
 }) => {
   const classes = useStyles();
+
+  const moveVariant = useCallback(
+    (dragIndex, hoverIndex, productId) => {
+      const newData = [...productsList];
+      const product = newData.find((product) => product.id === productId);
+      const dragVariant = product.variants[dragIndex];
+      product.variants.splice(dragIndex, 1);
+      product.variants.splice(hoverIndex, 0, dragVariant);
+      setProductsList(newData);
+    },
+    [productsList]
+  );
 
   return (
     <div key={item.id} className={classes.productList}>
@@ -122,13 +137,21 @@ const ProductTable = ({
       {(item.showVariants || item.variants?.length == 1) && (
         <div className={classes.variantsContainer}>
           {item.variants.map((variant, variantIndex) => (
-            <VariantTable
+            <DraggableVariant
               key={variant.id}
+              index={variantIndex}
               variant={variant}
-              variantIndex={variantIndex}
-              handleToggleDiscountVariant={handleToggleDiscountVariant}
-              index={index}
-            />
+              moveVariant={moveVariant}
+              productId={item.id}
+            >
+              <VariantTable
+                key={variant.id}
+                variant={variant}
+                variantIndex={variantIndex}
+                handleToggleDiscountVariant={handleToggleDiscountVariant}
+                index={index}
+              />
+            </DraggableVariant>
           ))}
         </div>
       )}

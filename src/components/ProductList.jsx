@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Typography } from "@mui/material";
 import ProductPicker from "./ProductPicker";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
@@ -6,6 +6,7 @@ import { useStyles } from "../styles";
 import ProductTable from "./tables/ProductTable";
 import initialProducts from "../assets/initialProduct";
 import AddProductButton from "./AddProductButton";
+import DraggableProduct from "./draggable/DraggableProduct";
 
 const theme = createTheme({
   palette: {
@@ -45,6 +46,17 @@ const ProductList = () => {
     setProductsList([...productsList, newRow]);
   };
 
+  const moveRow = useCallback(
+    (dragIndex, hoverIndex) => {
+      const dragRow = productsList[dragIndex];
+      const newData = [...productsList];
+      newData.splice(dragIndex, 1);
+      newData.splice(hoverIndex, 0, dragRow);
+      setProductsList(newData);
+    },
+    [productsList]
+  );
+
   const showMenu = (index) => {
     setDialogOpen(true);
     setEditIndex(index);
@@ -80,17 +92,25 @@ const ProductList = () => {
           <Typography style={{ marginLeft: "25%" }}>Discount</Typography>
         </div>
         {productsList.map((item, index) => (
-          <ProductTable
+          <DraggableProduct
             key={item.id}
-            item={item}
             index={index}
-            productsList={productsList}
-            showMenu={showMenu}
-            handleToggleDiscountProduct={handleToggleDiscountProduct}
-            handleDeleteProduct={handleDeleteProduct}
-            handleToggleVariants={handleToggleVariants}
-            handleToggleDiscountVariant={handleToggleDiscountVariant}
-          />
+            id={item.id}
+            moveRow={moveRow}
+          >
+            <ProductTable
+              key={item.id}
+              item={item}
+              index={index}
+              productsList={productsList}
+              setProductsList={setProductsList}
+              showMenu={showMenu}
+              handleToggleDiscountProduct={handleToggleDiscountProduct}
+              handleDeleteProduct={handleDeleteProduct}
+              handleToggleVariants={handleToggleVariants}
+              handleToggleDiscountVariant={handleToggleDiscountVariant}
+            />
+          </DraggableProduct>
         ))}
 
         <AddProductButton addRow={addRow} />
