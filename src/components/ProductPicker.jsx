@@ -130,14 +130,18 @@ const ProductPicker = ({
   };
 
   const handleToggleVariant = (productId, variantId) => {
-    const product = products.find((product) => product.id == productId);
+    const product = products.find((product) => product.id === productId);
     const isProductSelected = selectedProducts.some(
       (item) => item.id === product.id
     );
-    const newSelectedItems = [...selectedProducts];
+
+    const newSelectedItems = selectedProducts.map((item) => ({
+      ...item,
+      variants: [...item.variants],
+    }));
 
     if (isProductSelected) {
-      const productIndexInSelected = selectedProducts.findIndex(
+      const productIndexInSelected = newSelectedItems.findIndex(
         (item) => item.id === product.id
       );
 
