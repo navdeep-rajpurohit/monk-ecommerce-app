@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import { useRef } from "react";
 import { useDrag, useDrop } from "react-dnd";
 
 const ItemTypes = {
@@ -57,7 +57,11 @@ const DraggableVariant = ({
 
   drag(drop(ref));
 
-  return <tr ref={ref}>{children}</tr>;
+  return (
+    <tr ref={ref}>
+      <td>{children}</td>
+    </tr>
+  );
 };
 
 export default DraggableVariant;

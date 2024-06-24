@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useCallback } from "react";
 import { Button, TextField, IconButton, Typography } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
@@ -7,7 +7,7 @@ import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { useStyles } from "../../styles";
+import { useStyles } from "../../styles/styles";
 import VariantTable from "./VariantTable";
 import DraggableVariant from "../draggable/DraggableVariant";
 
@@ -39,7 +39,7 @@ const ProductTable = ({
   return (
     <div key={item.id} className={classes.productList}>
       <div className={classes.productRow}>
-        <DragIndicatorIcon color="default" />
+        <DragIndicatorIcon color="default" className={classes.dragIcon} />
         <Typography variant="body1" style={{ marginRight: 16 }}>
           {index + 1}.
         </Typography>
@@ -112,7 +112,11 @@ const ProductTable = ({
             >
               <CloseIcon />
             </IconButton>
-          ) : null}
+          ) : (
+            <IconButton sx={{ visibility: "hidden" }}>
+              <CloseIcon />
+            </IconButton>
+          )}
         </div>
       </div>
       <div style={{ height: 30 }}>

@@ -1,24 +1,60 @@
 import { makeStyles } from "@mui/styles";
+import { createTheme } from "@mui/material";
+
+const theme = createTheme({
+  palette: {
+    secondary: {
+      main: "#00815f",
+    },
+  },
+});
 
 const useStyles = makeStyles({
   root: {
-    top: "15%",
-    left: "28%",
-    margin: "auto",
-    position: "absolute",
     display: "flex",
     flexDirection: "column",
-    width: "80vh",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "80%",
+    padding: "2%",
+    margin: "auto",
+    bottom: 0,
+    right: 0,
+  },
+  heading: {
+    display: "flex",
+    justifyContent: "start",
+    width: "50%",
+    padding: "2%",
+  },
+  tableHeader: {
+    display: "flex",
+    width: "50%",
+    justifyContent: "space-around",
+  },
+  addProductButton: {
+    display: "flex",
+    justifyContent: "end",
+    width: "50%",
+  },
+  header: {
+    height: "40px",
+    width: "100%",
+    display: "flex",
+    padding: "5%",
+    border: "1px solid #E0E0E0",
+    gap: 2,
   },
   productRow: {
     display: "flex",
     alignItems: "center",
-    marginTop: 10,
+    marginTop: "2%",
+    overflow: "hidden",
   },
   productInput: {
     display: "flex",
     alignItems: "center",
-    marginRight: 16,
+    marginRight: "4%",
   },
   discountButton: {
     backgroundColor: "#28a745",
@@ -33,13 +69,13 @@ const useStyles = makeStyles({
     flexDirection: "column",
   },
   variantsContainer: {
-    marginLeft: 40,
-    marginBottom: 18,
+    marginLeft: "10%",
+    marginBottom: "7%",
   },
   variantRow: {
     display: "flex",
     alignItems: "center",
-    marginBottom: 8,
+    marginBottom: "4%",
   },
   deleteButton: {
     color: "#d32f2f",
@@ -77,6 +113,14 @@ const useStyles = makeStyles({
     height: "100%",
     zIndex: "9999",
   },
+  dragIcon: {
+    cursor: "grab",
+    "&:active": {
+      cursor: "grabbing",
+    },
+  },
 });
 
 export { useStyles };
+
+export default theme;

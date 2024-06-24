@@ -1,20 +1,12 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Typography } from "@mui/material";
+import { Box } from "@mui/material";
 import ProductPicker from "./ProductPicker";
-import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { useStyles } from "../styles";
+import { useStyles } from "../styles/styles";
 import ProductTable from "./tables/ProductTable";
 import initialProducts from "../assets/initialProduct";
 import AddProductButton from "./AddProductButton";
 import DraggableProduct from "./draggable/DraggableProduct";
-
-const theme = createTheme({
-  palette: {
-    secondary: {
-      main: "#00815f",
-    },
-  },
-});
 
 const ProductList = () => {
   const classes = useStyles();
@@ -77,20 +69,24 @@ const ProductList = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <div className={classes.root}>
-        <Typography variant="h5">Add Products</Typography>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-around",
-            padding: 7,
-            flexWrap: "nowrap",
-          }}
-        >
-          <Typography style={{ marginLeft: "5%" }}>Product</Typography>
-          <Typography style={{ marginLeft: "25%" }}>Discount</Typography>
-        </div>
+    <Box className={classes.root}>
+      <Box className={classes.heading}>
+        <Box>
+          {" "}
+          <Typography variant="h5">Add Products</Typography>
+        </Box>
+      </Box>
+      <Box className={classes.tableHeader}>
+        <Box>
+          {" "}
+          <Typography style={{}}>Product</Typography>
+        </Box>
+        <Box>
+          {" "}
+          <Typography style={{}}>Discount</Typography>
+        </Box>
+      </Box>
+      <Box className={classes.tableRows}>
         {productsList.map((item, index) => (
           <DraggableProduct
             key={item.id}
@@ -112,19 +108,25 @@ const ProductList = () => {
             />
           </DraggableProduct>
         ))}
+      </Box>
 
-        <AddProductButton addRow={addRow} />
+      <Box className={classes.addProductButton}>
+        {" "}
+        <Box>
+          {" "}
+          <AddProductButton addRow={addRow} />
+        </Box>
+      </Box>
 
-        <ProductPicker
-          open={dialogOpen}
-          onClose={() => setDialogOpen(false)}
-          onAddProduct={handleAddProduct}
-          index={editIndex}
-          productsList={productsList}
-          setProductsList={setProductsList}
-        />
-      </div>
-    </ThemeProvider>
+      <ProductPicker
+        open={dialogOpen}
+        onClose={() => setDialogOpen(false)}
+        onAddProduct={handleAddProduct}
+        index={editIndex}
+        productsList={productsList}
+        setProductsList={setProductsList}
+      />
+    </Box>
   );
 };
 

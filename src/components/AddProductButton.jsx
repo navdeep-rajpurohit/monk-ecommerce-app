@@ -1,6 +1,5 @@
-import React from "react";
 import { Button } from "@mui/material";
-import { useStyles } from "../styles";
+import { useStyles } from "../styles/styles";
 
 const AddProductButton = ({ addRow }) => {
   const classes = useStyles();
@@ -12,7 +11,6 @@ const AddProductButton = ({ addRow }) => {
         onClick={addRow}
         color="secondary"
         style={{
-          float: "right",
           marginRight: 15,
           textTransform: "none",
           marginTop: 10,

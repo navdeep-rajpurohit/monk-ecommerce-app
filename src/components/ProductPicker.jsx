@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -10,11 +10,12 @@ import {
   Typography,
   IconButton,
   ListItemText,
+  Box,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useStyles } from "../styles";
+import { useStyles } from "../styles/styles";
 import PickerList from "./tables/PickerList";
 import _ from "lodash"; // Import lodash for debounce function
 
@@ -221,12 +222,12 @@ const ProductPicker = ({
             ))}
           </List>
         </DialogContent>
-        <div className={classes.selectedCount}>
+        <Box className={classes.selectedCount}>
           <Typography variant="body2">
             {selectedProducts.length} product
             {selectedProducts.length !== 1 ? "s" : ""} selected
           </Typography>
-        </div>
+        </Box>
         <DialogActions>
           <Button
             onClick={onClose}

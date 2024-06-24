@@ -1,11 +1,10 @@
-import React from "react";
 import { useDrag, useDrop } from "react-dnd";
 
 const ItemTypes = {
   ROW: "row",
 };
 
-const DraggableProduct = ({ index, id, moveRow, children }) => {
+const DraggableProduct = ({ index, moveRow, children }) => {
   const [, ref] = useDrag({
     type: ItemTypes.ROW,
     item: { index },
@@ -21,7 +20,11 @@ const DraggableProduct = ({ index, id, moveRow, children }) => {
     },
   });
 
-  return <tr ref={(node) => ref(drop(node))}>{children}</tr>;
+  return (
+    <tr ref={(node) => ref(drop(node))}>
+      <td>{children}</td>
+    </tr>
+  );
 };
 
 export default DraggableProduct;

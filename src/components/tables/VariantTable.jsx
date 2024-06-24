@@ -1,15 +1,14 @@
-import React from "react";
 import DragIndicatorIcon from "@mui/icons-material/DragIndicator";
 import { Button, TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
-import { useStyles } from "../../styles";
+import { useStyles } from "../../styles/styles";
 
 const VariantTable = ({
   variant,
   variantIndex,
   handleToggleDiscountVariant,
-  index
+  index,
 }) => {
   const classes = useStyles();
   return (
