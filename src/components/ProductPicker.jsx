@@ -18,6 +18,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import { useStyles } from "../styles/styles";
 import PickerList from "./tables/PickerList";
 import _ from "lodash"; // Import lodash for debounce function
+const apiKey = import.meta.env.VITE_API_KEY; // Api key
 
 const theme = createTheme({
   palette: {
@@ -60,9 +61,10 @@ const ProductPicker = ({
   }, [searchTerm]);
 
   useEffect(() => {
-    fetchData();
+    fetchData(); // initial api call
   }, [currentPage]);
 
+  // for listening scroll events
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
@@ -70,12 +72,20 @@ const ProductPicker = ({
     };
   }, [currentPage]);
 
+  // Api call method
   const fetchData = async () => {
     setIsLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:3000/task/products?&search=${searchTerm}&page=${currentPage}`
+        `https://stageapi.monkcommerce.app/task/products/search?search=${searchTerm}&page=${currentPage}&limit=1`,
+        {
+          method: "GET",
+          headers: {
+            "x-api-key": apiKey,
+          },
+        }
       );
+
       if (!response.ok) {
         console.log("API error");
       }
@@ -88,12 +98,14 @@ const ProductPicker = ({
     } catch (err) {
       console.log(err);
     } finally {
+      // used settimeout for loader as image loading takes time
       setTimeout(() => {
         setIsLoading(false);
       }, 1500);
     }
   };
 
+  // to listen to scroll event
   const handleScroll = (event) => {
     const { scrollTop, clientHeight, scrollHeight } = event.target;
     if (scrollHeight - scrollTop <= clientHeight + 0.5) {
@@ -162,16 +174,12 @@ const ProductPicker = ({
     product.title.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  // for adding selected product
   const addProduct = () => {
     onClose;
     setSelectedProducts([]);
-
     let tempList = [...productsList];
-    // tempList = tempList.filter(
-    //   (product, i) => !product.default && i < index
-    //
     tempList.splice(index, 1, ...selectedProducts);
-
     setProductsList(tempList);
   };
 
@@ -211,9 +219,10 @@ const ProductPicker = ({
             ) : (
               ""
             )}
-            {filteredProducts.map((product) => (
+            {filteredProducts.map((product, i) => (
               <PickerList
-                key={product.id}
+                key={i}
+                index={i}
                 product={product}
                 handleToggleProduct={handleToggleProduct}
                 selectedProducts={selectedProducts}

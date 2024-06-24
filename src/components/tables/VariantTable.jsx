@@ -3,17 +3,22 @@ import { Button, TextField } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import Select from "@mui/material/Select";
 import { useStyles } from "../../styles/styles";
+import CloseIcon from "@mui/icons-material/Close";
+import { IconButton } from "@mui/material";
+import ProductList from "../ProductList";
 
 const VariantTable = ({
   variant,
   variantIndex,
   handleToggleDiscountVariant,
+  handleDeleteVariant,
   index,
+  productsList,
 }) => {
   const classes = useStyles();
   return (
     <div key={variant.id} className={classes.variantRow}>
-      <DragIndicatorIcon />
+      <DragIndicatorIcon color="default" className={classes.dragIcon} />
       <TextField
         size="small"
         variant="outlined"
@@ -71,6 +76,19 @@ const VariantTable = ({
         >
           Add Discount
         </Button>
+      )}
+
+      {productsList.variants.length > 1 ? (
+        <IconButton
+          onClick={() => handleDeleteVariant(index, variantIndex)}
+          className={classes.deleteButton}
+        >
+          <CloseIcon />
+        </IconButton>
+      ) : (
+        <IconButton sx={{ visibility: "hidden" }}>
+          <CloseIcon />
+        </IconButton>
       )}
     </div>
   );

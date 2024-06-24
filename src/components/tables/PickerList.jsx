@@ -5,33 +5,42 @@ import {
   ListSubheader,
   Typography,
   ListItemButton,
-  Avatar,
+  Box,
 } from "@mui/material";
+import { Img } from "react-image";
+import CircularProgress from "@mui/material/CircularProgress";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
 
 const PickerList = ({
+  index,
   product,
   handleToggleProduct,
   selectedProducts,
   handleToggleVariant,
 }) => {
   return (
-    <React.Fragment key={product.id}>
+    <React.Fragment key={index}>
       <ListItemButton onClick={() => handleToggleProduct(product.id)} divider>
         <Checkbox
           color="secondary"
           checked={selectedProducts.some((item) => item.id === product.id)}
         />
-        <Avatar
-          variant="square"
-          style={{ marginLeft: 5, marginRight: 5 }}
-          src={product.image.src}
-        ></Avatar>
+        <Box sx={{ marginLeft: 1, marginRight: 1 }}>
+          <LazyLoadImage
+            src={product.image.src}
+            width={40}
+            height={40}
+            effect="blur"
+          />
+        </Box>
+
         <ListItemText primary={product.title} />
       </ListItemButton>
 
-      {product.variants.map((variant) => (
+      {product.variants.map((variant, i) => (
         <ListItemButton
-          key={variant.id}
+          key={i}
           onClick={() => handleToggleVariant(product.id, variant.id)}
           style={{ paddingLeft: 32 }}
           divider

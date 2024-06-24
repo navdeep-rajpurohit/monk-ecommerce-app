@@ -9,35 +9,48 @@ import AddProductButton from "./AddProductButton";
 import DraggableProduct from "./draggable/DraggableProduct";
 
 const ProductList = () => {
-  const classes = useStyles();
+  const classes = useStyles(); // styles
   const [productsList, setProductsList] = useState(initialProducts);
-  const [dialogOpen, setDialogOpen] = useState(false);
-  const [editIndex, setEditIndex] = useState(0);
+  const [dialogOpen, setDialogOpen] = useState(false); // dialog toggle variable
+  const [editIndex, setEditIndex] = useState(0); // state to keep the index of edit
 
+  // adding new row
   const handleAddProduct = (newProduct) => {
     setProductsList([...productsList, newProduct]);
   };
 
-  useEffect(() => {
-    console.log("main", productsList);
-  }, [productsList]);
-
+  // to show hide variant
   const handleToggleVariants = (index) => {
     const updatedProducts = [...productsList];
     updatedProducts[index].showVariants = !updatedProducts[index].showVariants;
     setProductsList(updatedProducts);
   };
 
+  // to delete the product row
   const handleDeleteProduct = (index) => {
     const updatedProducts = productsList.filter((_, i) => i !== index);
     setProductsList(updatedProducts);
   };
 
+  // to delete the variant row
+  const handleDeleteVariant = (index, variantIndex) => {
+    const updatedVariants = productsList[index].variants.filter(
+      (_, i) => i != variantIndex
+    );
+
+    let updatedProducts = [...productsList];
+    updatedProducts[index].variants = updatedVariants;
+
+    setProductsList(updatedProducts);
+  };
+
+  // adding new row
   const addRow = () => {
     const newRow = { id: productsList.length + 1, title: "Select product" };
     setProductsList([...productsList, newRow]);
   };
 
+  // drag row logic
   const moveRow = useCallback(
     (dragIndex, hoverIndex) => {
       const dragRow = productsList[dragIndex];
@@ -49,22 +62,24 @@ const ProductList = () => {
     [productsList]
   );
 
+  // show hide menu
   const showMenu = (index) => {
     setDialogOpen(true);
     setEditIndex(index);
   };
 
+  // add discount on product logic
   const handleToggleDiscountProduct = (index) => {
     const updatedProducts = [...productsList];
     updatedProducts[index].addDiscount = !updatedProducts[index].addDiscount;
     setProductsList(updatedProducts);
   };
 
+  // to add discount for variant
   const handleToggleDiscountVariant = (productIndex, variantIndex) => {
     const updatedProducts = [...productsList];
     updatedProducts[productIndex].variants[variantIndex].addDiscount =
       !updatedProducts[productIndex].variants[variantIndex].addDiscount;
-    console.log(updatedProducts);
     setProductsList(updatedProducts);
   };
 
@@ -89,13 +104,13 @@ const ProductList = () => {
       <Box className={classes.tableRows}>
         {productsList.map((item, index) => (
           <DraggableProduct
-            key={item.id}
+            key={index}
             index={index}
             id={item.id}
             moveRow={moveRow}
           >
             <ProductTable
-              key={item.id}
+              key={index}
               item={item}
               index={index}
               productsList={productsList}
@@ -105,6 +120,7 @@ const ProductList = () => {
               handleDeleteProduct={handleDeleteProduct}
               handleToggleVariants={handleToggleVariants}
               handleToggleDiscountVariant={handleToggleDiscountVariant}
+              handleDeleteVariant={handleDeleteVariant}
             />
           </DraggableProduct>
         ))}

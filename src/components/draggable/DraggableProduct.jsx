@@ -21,9 +21,9 @@ const DraggableProduct = ({ index, moveRow, children }) => {
   });
 
   return (
-    <tr ref={(node) => ref(drop(node))}>
-      <td>{children}</td>
-    </tr>
+    <div ref={(node) => ref(drop(node))}>
+      <div>{children}</div>
+    </div>
   );
 };
 

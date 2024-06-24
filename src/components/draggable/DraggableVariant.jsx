@@ -58,9 +58,9 @@ const DraggableVariant = ({
   drag(drop(ref));
 
   return (
-    <tr ref={ref}>
-      <td>{children}</td>
-    </tr>
+    <div ref={ref}>
+      <div>{children}</div>
+    </div>
   );
 };
 

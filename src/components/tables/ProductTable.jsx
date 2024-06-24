@@ -19,6 +19,7 @@ const ProductTable = ({
   showMenu,
   handleToggleDiscountProduct,
   handleDeleteProduct,
+  handleDeleteVariant,
   handleToggleVariants,
   handleToggleDiscountVariant,
 }) => {
@@ -154,6 +155,8 @@ const ProductTable = ({
                 variantIndex={variantIndex}
                 handleToggleDiscountVariant={handleToggleDiscountVariant}
                 index={index}
+                handleDeleteVariant={handleDeleteVariant}
+                productsList={item}
               />
             </DraggableVariant>
           ))}
