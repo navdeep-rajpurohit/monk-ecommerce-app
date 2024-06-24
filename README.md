@@ -9,7 +9,7 @@
 ## Note !important
 1. Have not implemented logic to avoid duplicate entries as the user can add different set of discount on different set of products/variants. It can be added later.
 2. Discount values can be reflected to all the variants of a product. (Not implemented yet) 
-3. The images fetched from api are heave (4-5 mb) hence it affects the performance. Used the libs to optimize performance using lazy loading.
+3. The images fetched from api are heavy (4-5 mb) hence it affects the performance. Used the libs to optimize performance using lazy loading.
 
 ## Instructions to run locally
 
