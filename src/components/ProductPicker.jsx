@@ -77,7 +77,7 @@ const ProductPicker = ({
     setIsLoading(true);
     try {
       const response = await fetch(
-        `https://stageapi.monkcommerce.app/task/products/search?search=${searchTerm}&page=${currentPage}&limit=1`,
+        `https://stageapi.monkcommerce.app/task/products/search?search=${searchTerm}&page=${currentPage}&limit=10`,
         {
           method: "GET",
           headers: {
