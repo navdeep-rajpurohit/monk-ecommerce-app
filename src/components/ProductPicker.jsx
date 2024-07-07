@@ -74,6 +74,7 @@ const ProductPicker = ({
 
   // Api call method
   const fetchData = async () => {
+    console.log("Data fetching")
     setIsLoading(true);
     try {
       const response = await fetch(

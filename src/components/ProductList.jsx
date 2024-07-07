@@ -13,6 +13,16 @@ const ProductList = () => {
   const [productsList, setProductsList] = useState(initialProducts);
   const [dialogOpen, setDialogOpen] = useState(false); // dialog toggle variable
   const [editIndex, setEditIndex] = useState(0); // state to keep the index of edit
+  const [total, setTotal] = useState([0]);
+
+  useEffect(() => {
+    let total1 = productsList.map((item) =>
+      item.variants?.reduce((total, item) => total + item?.price, 0)
+    );
+    total1 = total1.reduce((total, item) => total + Number(item), 0);
+
+    setTotal(total1);
+  }, [productsList]);
 
   // adding new row
   const handleAddProduct = (newProduct) => {
@@ -142,6 +152,7 @@ const ProductList = () => {
         productsList={productsList}
         setProductsList={setProductsList}
       />
+      <Box><Typography>Total : $ {total || 0}</Typography></Box>
     </Box>
   );
 };
